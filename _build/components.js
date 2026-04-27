@@ -43,6 +43,8 @@ const icon = (name, size = 20) => {
 // ---------- Site header ----------
 function header(activeKey = "") {
   const phoneStripped = SITE.phone.replace(/\s/g, "");
+
+  // Desktop nav (and base markup for mobile drawer)
   const links = NAV.map((l) => {
     const cls = `nav-link${activeKey === l.key ? " active" : ""}`;
     if (l.submenu) {
@@ -58,6 +60,37 @@ function header(activeKey = "") {
     return `<a class="${cls}" href="${l.href}">${escape(l.label)}</a>`;
   }).join("");
 
+  // Mobile drawer: explicit collapsible groups
+  const drawerLinks = NAV.map((l, i) => {
+    const isActive = activeKey === l.key;
+    if (l.submenu) {
+      const items = l.submenu
+        .map(([n, h]) => `<a class="m-sub-link" href="${h}">${escape(n)}</a>`)
+        .join("");
+      return `
+        <details class="m-group" ${isActive ? "open" : ""}>
+          <summary class="m-link${isActive ? " active" : ""}">
+            <span>${escape(l.label)}</span>
+            <span class="m-chev" aria-hidden="true">+</span>
+          </summary>
+          <div class="m-sub">
+            <a class="m-sub-link m-sub-hub" href="${l.href}">→ Voir tout : ${escape(l.label)}</a>
+            ${items}
+          </div>
+        </details>`;
+    }
+    return `<a class="m-link${isActive ? " active" : ""}" href="${l.href}">${escape(l.label)}</a>`;
+  }).join("");
+
+  // Hamburger / close icon
+  const burgerIcon = `
+    <svg class="ic-burger" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+      <path d="M3 6h18M3 12h18M3 18h18"/>
+    </svg>
+    <svg class="ic-close" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+      <path d="M6 6l12 12M18 6 6 18"/>
+    </svg>`;
+
   return `
   <a class="skip-link" href="#main">Aller au contenu</a>
   <header class="site-header">
@@ -66,16 +99,36 @@ function header(activeKey = "") {
         <span class="logo-mark">PS</span>
         <span class="logo-name">${SITE.brand}<small>${SITE.domain}</small></span>
       </a>
-      <nav class="primary" style="display:flex;gap:28px;align-items:center" aria-label="Navigation principale">
+      <nav class="primary" aria-label="Navigation principale">
         ${links}
       </nav>
-      <div class="row" style="gap:12px">
+      <div class="header-right row" style="gap:12px">
         <a href="tel:${phoneStripped}" class="phone row" style="gap:6px">${icon("phone", 14)}${SITE.phone}</a>
-        <a href="/devis-chauffage-industriel/" class="btn primary">Demander un devis</a>
-        <button class="nav-toggle" aria-label="Menu" aria-expanded="false">${icon("flame", 20)}</button>
+        <a href="/devis-chauffage-industriel/" class="btn primary header-cta">Demander un devis</a>
+        <button class="nav-toggle" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="mobile-drawer" type="button">
+          ${burgerIcon}
+        </button>
       </div>
     </div>
-  </header>`;
+  </header>
+
+  <div class="m-backdrop" aria-hidden="true"></div>
+  <aside class="m-drawer" id="mobile-drawer" aria-label="Menu mobile" hidden>
+    <div class="m-drawer-head">
+      <a href="/" class="logo" style="font-size:13px">
+        <span class="logo-mark">PS</span>
+        <span class="logo-name">${SITE.brand}</span>
+      </a>
+      <button class="m-close" aria-label="Fermer le menu" type="button"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+    </div>
+    <nav class="m-nav" aria-label="Menu mobile">
+      ${drawerLinks}
+    </nav>
+    <div class="m-drawer-foot">
+      <a href="/devis-chauffage-industriel/" class="btn primary" style="width:100%;justify-content:center">Demander un devis →</a>
+      <a href="tel:${phoneStripped}" class="btn" style="width:100%;justify-content:center;margin-top:8px">${icon("phone", 14)} ${SITE.phone}</a>
+    </div>
+  </aside>`;
 }
 
 // ---------- Trust strip ----------
