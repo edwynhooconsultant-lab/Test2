@@ -11,6 +11,13 @@ Site statique généré pour Plomberie Services 91, spécialiste du chauffage in
 ## Régénérer le site
 
 ```bash
+# Build local (chemins absolus à la racine)
+node _build/build.js
+
+# Build GitHub Pages (chemins préfixés /Test2)
+MSYS_NO_PATHCONV=1 BASE_PATH=/Test2 node _build/build.js
+
+# Build domaine custom (par défaut, racine)
 node _build/build.js
 ```
 
@@ -18,9 +25,9 @@ Toutes les données sont centralisées dans `_build/data.js`. Modifier les conte
 
 ## Hébergement GitHub Pages
 
-Le site est servi depuis la branche `main` à la racine. Activer dans les **Settings → Pages → Branch: main / (root)**.
+Le site est servi depuis la branche `main` à la racine. À activer dans **Settings → Pages → Branch: main / (root)**.
 
-URL une fois activé : `https://edwynhooconsultant-lab.github.io/Test2/`
+URL : **https://edwynhooconsultant-lab.github.io/Test2/**
 
 ## Stack
 

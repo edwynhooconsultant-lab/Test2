@@ -20,10 +20,19 @@ const T = require("./templates");
 const { staticPage } = T;
 
 const ROOT = path.resolve(__dirname, "..");
+const BASE = process.env.BASE_PATH || ""; // e.g. "/Test2"
+
+// Rewrites root-absolute paths "/foo" -> BASE + "/foo" inside HTML attributes.
+// Targets: href="/...", src="/...", action="/...". Skips protocol-relative "//...".
+function applyBase(html) {
+  if (!BASE) return html;
+  return html.replace(/(\b(?:href|src|action)\s*=\s*")\/(?!\/)/g, `$1${BASE}/`);
+}
+
 const writeAt = (urlPath, html) => {
   const out = path.join(ROOT, urlPath === "/" ? "index.html" : `${urlPath.replace(/^\//, "").replace(/\/$/, "")}/index.html`);
   fs.mkdirSync(path.dirname(out), { recursive: true });
-  fs.writeFileSync(out, html, "utf8");
+  fs.writeFileSync(out, applyBase(html), "utf8");
   console.log("✓", urlPath);
 };
 
