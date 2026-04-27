@@ -1046,3 +1046,287 @@ a.card:hover { border-color: var(--slate); box-shadow: var(--shadow-md); transfo
 @media (max-width: 720px) {
   .brands-grid { grid-template-columns: repeat(3, 1fr); }
 }
+
+/* =========================================================
+   MOBILE-FRIENDLY OVERRIDES
+   - Use !important to defeat inline styles in templates
+   - Three breakpoints: 1024px (tablet/laptop), 768px (tablet),
+     560px (phone large), 400px (phone small)
+   ========================================================= */
+
+/* Smooth horizontal overflow guard */
+html, body { overflow-x: hidden; }
+
+/* Hide nav-toggle on desktop, show on tablet/mobile */
+@media (max-width: 1024px) {
+  /* Make sure the toggle is rendered */
+  .nav-toggle { display: inline-flex !important; }
+
+  /* Hide the desktop primary nav until menu-open */
+  .site-header nav.primary { display: none !important; }
+  body.menu-open .site-header nav.primary {
+    display: flex !important;
+  }
+
+  /* Header CTA: keep it but make it tighter */
+  .site-header .btn.primary {
+    padding: 10px 14px;
+    font-size: 12px;
+  }
+}
+
+/* ---------- Tablet (≤ 1024px) ---------- */
+@media (max-width: 1024px) {
+  :root {
+    --gutter: 20px;
+    --gutter-lg: 24px;
+  }
+  section { padding: 56px 0 !important; }
+  section.compact { padding: 32px 0 !important; }
+  .h1 { font-size: 40px !important; }
+  .h1.lg { font-size: 44px !important; }
+  .h2 { font-size: 30px !important; }
+  .h3 { font-size: 20px !important; }
+  .lead { font-size: 17px; }
+
+  /* Force every 2-column inline grid to stack */
+  [style*="grid-template-columns:1fr 2fr"],
+  [style*="grid-template-columns: 1fr 2fr"],
+  [style*="grid-template-columns:1.2fr 1fr"],
+  [style*="grid-template-columns: 1.2fr 1fr"],
+  [style*="grid-template-columns:1.1fr 1fr"],
+  [style*="grid-template-columns: 1.1fr 1fr"],
+  [style*="grid-template-columns:1fr 1fr"],
+  [style*="grid-template-columns: 1fr 1fr"] {
+    grid-template-columns: 1fr !important;
+    gap: 24px !important;
+  }
+
+  /* The hero spec card must stack underneath the video */
+  .hero-split .spec-card {
+    position: static !important;
+    width: 100% !important;
+    margin-top: 16px !important;
+    left: auto !important;
+    bottom: auto !important;
+  }
+
+  /* Dashboard head row */
+  .dashboard .head .row-between {
+    flex-direction: column;
+    align-items: flex-start !important;
+    gap: 16px;
+  }
+  .dashboard .head { padding: 24px 24px 0 !important; }
+  .dashboard .grid { grid-template-columns: repeat(2, 1fr) !important; }
+
+  /* Stats band */
+  .stats-band .stat .num { font-size: 36px; }
+  .stats-band .stat { padding: 20px; }
+
+  /* Decree banner: stack icon, text and button */
+  .decree { grid-template-columns: 1fr !important; }
+
+  /* CTA inline (dark band): stack heading + buttons */
+  .cta-inline {
+    flex-direction: column;
+    align-items: flex-start !important;
+    gap: 16px !important;
+  }
+
+  /* Express form */
+  .express-form .grid-form { grid-template-columns: 1fr !important; }
+  .express-form .grid-form .full { grid-column: span 1 !important; }
+
+  /* Hero padding tighter */
+  .hero-split { padding: 32px 0 0 !important; }
+
+  /* TOC: untether sticky on tablet */
+  .page-toc aside.toc,
+  .layout-sidebar aside {
+    position: static !important;
+    top: auto !important;
+  }
+
+  /* Card and form padding */
+  .card { padding: 20px; }
+
+  /* Footer: phone link wraps */
+  .site-footer ul li, .site-footer ul li a { word-break: break-word; }
+}
+
+/* ---------- Phone (≤ 768px) ---------- */
+@media (max-width: 768px) {
+  :root {
+    --gutter: 16px;
+    --gutter-lg: 16px;
+    --header-h: 64px;
+  }
+
+  /* Crank typography down again */
+  .h1 { font-size: 32px !important; line-height: 1.1; }
+  .h1.lg { font-size: 34px !important; }
+  .h2 { font-size: 24px !important; line-height: 1.2; }
+  .h3 { font-size: 18px !important; }
+  .h4 { font-size: 15px !important; }
+  .lead { font-size: 16px; }
+  .body { font-size: 14px; }
+
+  section { padding: 40px 0 !important; }
+  section.compact { padding: 24px 0 !important; }
+
+  /* Logo: hide tagline on small screens, keep mark + name */
+  .site-header .logo-name small { display: none; }
+  .site-header .logo-name { font-size: 13px; }
+
+  /* Header right side: hide the "Demander un devis" CTA, keep toggle */
+  .site-header .btn.primary { display: none !important; }
+  .site-header .row > a.phone { display: none !important; }
+
+  /* Stats band -> single column on phone */
+  .stats-band { grid-template-columns: 1fr !important; }
+  .stats-band .stat { border-left: 0 !important; border-top: 1px solid var(--line); }
+  .stats-band .stat:first-child { border-top: 0; }
+
+  /* Force every inline 3+ column grid to 1 col */
+  [style*="grid-template-columns:repeat(3"],
+  [style*="grid-template-columns: repeat(3"],
+  [style*="grid-template-columns:repeat(4"],
+  [style*="grid-template-columns: repeat(4"],
+  [style*="grid-template-columns:repeat(5"],
+  [style*="grid-template-columns: repeat(5"],
+  [style*="grid-template-columns:repeat(6"],
+  [style*="grid-template-columns: repeat(6"] {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 12px !important;
+  }
+
+  /* Top-level grid utilities to 2 cols / 1 col */
+  .grid-3, .grid-4 { grid-template-columns: 1fr 1fr !important; }
+  .grid-5, .grid-6, .grid-8 { grid-template-columns: 1fr 1fr !important; }
+  .sister-grid { grid-template-columns: 1fr 1fr !important; }
+  .dashboard .grid { grid-template-columns: 1fr !important; }
+
+  /* Process timeline: stack vertical with no connector line */
+  .timeline { grid-template-columns: 1fr !important; gap: 20px !important; }
+  .timeline::before { display: none !important; }
+  .timeline .step { padding: 0 !important; }
+
+  /* Buttons more touch-friendly */
+  .btn { padding: 14px 18px; font-size: 14px; min-height: 48px; }
+  .btn[style*="width:40px"] { width: 44px !important; height: 44px !important; }
+
+  /* Input touch targets */
+  .input, .textarea, .select { padding: 14px; font-size: 16px; min-height: 48px; }
+
+  /* Site footer collapses to 1 col */
+  .site-footer .grid { grid-template-columns: 1fr !important; gap: 24px !important; }
+  .site-footer .legal { flex-direction: column; align-items: flex-start; gap: 8px; }
+  .site-footer { padding: 40px 0 24px; }
+
+  /* Trust strip: tighter */
+  .trust-strip { gap: 16px !important; padding: 12px 0; }
+  .trust-strip .cert { font-size: 10px; }
+
+  /* Container: less side padding eaten */
+  .container { padding: 0 16px !important; }
+
+  /* Cards: tighter */
+  .card { padding: 16px; gap: 10px; }
+
+  /* Mobile menu: full-screen overlay style refinement */
+  body.menu-open nav.primary {
+    padding: 16px 20px !important;
+  }
+  body.menu-open .has-submenu { display: block; }
+  body.menu-open .has-submenu > .submenu {
+    display: block !important;
+    position: static !important;
+    box-shadow: none !important;
+    border: 0 !important;
+    padding: 0 0 12px 16px !important;
+    background: transparent !important;
+    margin-top: -8px;
+  }
+  body.menu-open .has-submenu > .submenu a {
+    padding: 8px 0;
+    font-size: 13px;
+    border-bottom: 1px dashed var(--line);
+  }
+  /* When menu is open, lock scroll */
+  body.menu-open { overflow: hidden; }
+
+  /* Hero photo: smaller aspect ratio */
+  .hero-split .media[style*="aspect-ratio:4/5"],
+  .hero-split .media[style*="aspect-ratio: 4/5"] {
+    aspect-ratio: 4/3 !important;
+  }
+
+  /* FAQ items: smaller summary */
+  .faq-list summary { font-size: 14px !important; }
+
+  /* Article body */
+  .article-body h2 { font-size: 22px; margin: 28px 0 12px; }
+  .article-body h3 { font-size: 17px; margin: 24px 0 10px; }
+  .article-body p { font-size: 15px; line-height: 1.65; }
+
+  /* Brands grid */
+  .brands-grid { grid-template-columns: repeat(3, 1fr) !important; gap: 8px; }
+  .brands-grid .brand { height: 48px; font-size: 11px; }
+
+  /* Photo card aspect ratio relax */
+  .photo-card .media { aspect-ratio: 4/3 !important; }
+
+  /* Inline breadcrumb wrap */
+  .breadcrumb { font-size: 11px; }
+
+  /* Dashboard head row gets compact */
+  .dashboard .head { padding: 20px 20px 0 !important; }
+  .dashboard .head .h2 { font-size: 22px !important; }
+  .dashboard .grid > a { padding: 18px !important; }
+  .dashboard .grid > a:nth-child(n+2) { border-top: 1px solid var(--line); border-left: 0 !important; }
+  .dashboard .grid > a:first-child { border-top: 0 !important; }
+
+  /* Timeline number circle smaller */
+  .timeline .step .num {
+    width: 44px; height: 44px;
+    border-radius: 22px;
+    font-size: 15px;
+  }
+
+  /* Spec card on hero */
+  .hero-split .spec-card { padding: 16px; }
+}
+
+/* ---------- Small phone (≤ 400px) ---------- */
+@media (max-width: 400px) {
+  .h1 { font-size: 28px !important; }
+  .h1.lg { font-size: 30px !important; }
+  .h2 { font-size: 22px !important; }
+  .lead { font-size: 15px; }
+  .grid-3, .grid-4, .grid-5, .grid-6, .grid-8,
+  .sister-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .brands-grid { grid-template-columns: repeat(2, 1fr) !important; }
+  [style*="grid-template-columns"] {
+    grid-template-columns: 1fr !important;
+  }
+  .badges-row { gap: 8px !important; }
+  .city-chips { gap: 6px !important; }
+  .city-chips a { font-size: 11px; padding: 5px 10px; }
+  .stats-band .stat .num { font-size: 30px; }
+}
+
+/* ---------- iOS-friendly: prevent input zoom on focus ---------- */
+@media (max-width: 768px) {
+  input, select, textarea { font-size: 16px !important; }
+}
+
+/* ---------- Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
